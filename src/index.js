@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import SeasonDisplay from './seasonDisplay';
 
 // const App = () => {
 //     window.navigator.geolocation.getCurrentPosition(
@@ -16,43 +17,41 @@ import ReactDOM from 'react-dom';
 // };
 class App extends React.Component {
 
-    constructor(props) {
-        super(props);
+    // constructor(props) {
+    //     super(props);
 
-        this.state = { lat: null, errorMessage: '' };
+    //     this.state = { lat: null, errorMessage: '' };
+    // }
+    //Runs through babel
+    state = { lat: null, errorMessage: '' };
 
+    componentDidMount() {
         window.navigator.geolocation.getCurrentPosition(
-            position => {
-                //we called setState to update state
-                this.setState({ lat: position.coords.latitude });
-            },
-            err => {
-                this.setState({ errorMessage: err.message });
-            }
-
+            position => this.setState({ lat: position.coords.latitude }),
+            err => this.setState({ errorMessage: err.message })
         );
     }
 
     //react says we have to define render
     render() {
 
-        if(this.state.errorMessage && !this.state.lat){
+        if (this.state.errorMessage && !this.state.lat) {
             return (
                 <div>
-                 Error: {this.state.errorMessage }
+                    Error: {this.state.errorMessage}
                 </div>
             );
         }
-        if(!this.state.errorMessage && this.state.lat){
-
-            return (
-                <div>
-                     Latitude : {this.state.lat}
-                </div>
-            )
+        if (!this.state.errorMessage && this.state.lat) {
+            return <SeasonDisplay  lat={this.state.lat}/>
+            // return (
+            //     <div>
+            //         Latitude : {this.state.lat}
+            //     </div>
+            // )
         }
         return <div>loading</div>;
-       
+
     }
 }
 
